@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>third-party-gateway</display-name>
+  
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>    
+       
+    <listener>
+        <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
+    </listener>
+    
+    <listener>
+        <listener-class>com.babeeta.butterfly.application.third.listener.InitListener</listener-class>
+    </listener>
+    
+    <servlet>
+        <servlet-name>NewInterface</servlet-name>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>NewInterface</servlet-name>
+        <url-pattern>/1/api/*</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>NewInterfaceAuthFilter</filter-name>
+        <filter-class>com.babeeta.butterfly.application.third.resource.AuthFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>NewInterfaceAuthFilter</filter-name>
+        <url-pattern>/1/api/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>OldInterface</servlet-name>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>OldInterface</servlet-name>
+        <url-pattern>/service/*</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>OldInterfaceAuthFilter</filter-name>
+        <filter-class>com.babeeta.butterfly.application.third.resource.AuthFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>OldInterfaceAuthFilter</filter-name>
+        <url-pattern>/service/*</url-pattern>
+    </filter-mapping>
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+		<servlet-name>expiredMsgFeedbackServlet</servlet-name>
+		<servlet-class>com.babeeta.butterfly.application.third.resource.ExpiredMsgFeedBackTestResource</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>expiredMsgFeedbackServlet</servlet-name>
+		<url-pattern>/testExpiredMsgFeedback</url-pattern>
+	</servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

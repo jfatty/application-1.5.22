@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <context:annotation-config />
+    <context:component-scan base-package="com.babeeta.butterfly.application.third.resource" />
+    <context:property-placeholder location="classpath:userMessageConfig.properties,classpath:groupMessageConfig.properties"/>
+	
+	<bean id="internalTestResource" class="com.babeeta.butterfly.application.third.resource.InternalTestResource" scope="prototype">
+        <property name="tagService" ref="oppoTagServiceImpl"/>
+    </bean>
+    
+    <bean id="groupMessageConfig" class="com.babeeta.butterfly.application.third.resource.MessageConfig" scope="singleton">
+    	<property name="lifeValueMin" value="${groupMessageConfig.lifeValueMin}"></property>
+    	<property name="lifeValueMax" value="${groupMessageConfig.lifeValueMax}"></property>
+    	<property name="lifeValueDefault" value="${groupMessageConfig.lifeValueDefault}"></property>
+    	<property name="delayValueMin" value="${groupMessageConfig.delayValueMin}"></property>
+    	<property name="delayValueMax" value="${groupMessageConfig.delayValueMax}"></property>
+    	<property name="delayValueDefault" value="${groupMessageConfig.delayValueDefault}"></property>
+    	<property name="lengthValueMax" value="${groupMessageConfig.lengthValueMax}"></property>
+    </bean>
+    
+    <bean id="userMessageConfig" class="com.babeeta.butterfly.application.third.resource.MessageConfig" scope="singleton">
+    	<property name="lifeValueMin" value="${userMessageConfig.lifeValueMin}"></property>
+    	<property name="lifeValueMax" value="${userMessageConfig.lifeValueMax}"></property>
+    	<property name="lifeValueDefault" value="${userMessageConfig.lifeValueDefault}"></property>
+    	<property name="delayValueMin" value="${userMessageConfig.delayValueMin}"></property>
+    	<property name="delayValueMax" value="${userMessageConfig.delayValueMax}"></property>
+    	<property name="delayValueDefault" value="${userMessageConfig.delayValueDefault}"></property>
+    	<property name="lengthValueMax" value="${userMessageConfig.lengthValueMax}"></property>
+    </bean>
+  
+    <bean id="authService" class="com.babeeta.butterfly.application.third.service.auth.AuthServiceImpl"></bean>
+    <!-- zeyong.xia add -->
+    <bean id="oppoTagServiceImpl" class="com.babeeta.butterfly.application.third.service.tag.OppoTagServiceImpl"></bean>
+    <bean id="filterWordsServiceImpl" class="com.babeeta.butterfly.application.third.service.words.FilterWordsServiceImpl"></bean>
+    <bean id="oppoAppServiceImpl" class="com.babeeta.butterfly.application.third.service.app.OppoAppServiceImpl"></bean>
+    <bean id="oppoMessageResource" class="com.babeeta.butterfly.application.third.resource.OppoMessageResource">
+        <property name="groupMessageConfig" ref="groupMessageConfig"></property>
+        <property name="userMessageConfig" ref="userMessageConfig"></property>
+        <property name="oppoAppServiceImpl" ref="oppoAppServiceImpl"></property>
+        <property name="filterWordsServiceImpl" ref="filterWordsServiceImpl"></property>
+    </bean>
+     <bean id="oldMessageResource" class="com.babeeta.butterfly.application.third.resource.OldMessageResource" scope="singleton">
+        <property name="oppoAppServiceImpl" ref="oppoAppServiceImpl"/>
+        <property name="userMessageConfig" ref="userMessageConfig"></property>
+    </bean>    
+    <bean id="oppoTagResource" class="com.babeeta.butterfly.application.third.resource.OppoTagResource">
+        <property name="oppoTagServiceImpl" ref="oppoTagServiceImpl"></property>
+    </bean>
+    
+    <bean id="feedbackService" class="com.babeeta.butterfly.application.third.service.message.FeedbackServiceImpl">
+    	<property name="appAccountService" ref="appAccountService"></property>
+    	<property name="namedService" ref="namedService"></property>
+    </bean>
+    <bean id="appAccountService" class="com.babeeta.butterfly.application.third.service.app.AppAccountServiceImpl"></bean>
+    
+    <bean id="namedService" class="com.babeeta.butterfly.application.third.service.NamedServiceImpl"></bean>
+ </beans>

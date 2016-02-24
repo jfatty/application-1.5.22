@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.4.1.min.js"></script>
+<script type="text/javascript">
+   function check()
+   {
+	 var words=document.getElementById("badword").value;
+	 var word="{word:"+words+"}";
+	 alert(word);
+	 $.ajax({
+			type: "post",
+			url: "/services/words/validate",
+			dataType:'json',
+			data:words,
+			success: function(result) {
+			alert(result);
+				if(result) {
+					alert("包含敏感词");
+					return true;
+				} 
+				 else {
+				 return true;
+				}
+			},
+//			complete: function(XMLHttpRequest, textStatus) {},
+//			error: function(xhr, status, error) {
+//				alert("服务器出错，请稍候再试。。。"+xhr);
+//				//document.getElementById("validation").value = "服务器出错，请稍候再试。。。";
+//				return true;
+//			},
+//				dataType:"xml",
+			cache:false
+		});
+	}
+
+   function submit_form()
+   {
+	   
+      if(!check())
+      {
+          //var forms=${"forms"};
+          // forms.submit();
+      }
+   }
+</script>
+<title>推消息</title>
+</head>
+<body>
+ <form action="" id="forms" name="forms" method="post" >
+   <table align="center" width="60%" border="1">
+     <tr>
+       <td>敏感词</td>
+       <td><textarea rows="10" cols="80" name="badword" id="badword"></textarea> </td>
+     </tr>
+     <tr>
+       <td colspan="2" align="center"><input type="button" value="推送" id="sub" onclick="submit_form()"></input>&nbsp;&nbsp;&nbsp;<input type="reset" value="重置" id="sub" onclick=""></td>
+     </tr>
+   </table>
+ </form>
+</body>
+</html>

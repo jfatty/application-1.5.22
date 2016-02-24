@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="../css/style_f.css"/>
+<link type="text/css" rel="stylesheet" href="../css/item_f.css"/>
+<script type="text/javascript" src="../js/jquery_min.js"></script>
+<script type="text/javascript" src="../js/jquery.DOMwindow.js"></script>
+<script type="text/javascript"> 
+$(document).ready(function(){
+	$('#divAnchor').openDOMWindow({ 
+		eventType:'click',
+		windowSourceID:'#inlineContent', 
+		loader:1, 
+		loaderImagePath:'animationProcessing.gif', 
+		loaderHeight:16, 
+		loaderWidth:17 
+	}); 
+	$('.example5closeDOMWindow').closeDOMWindow({eventType:'click'}); 
+	$(".kill_box").click(function(){
+		$('.example5closeDOMWindow').click();
+	});
+	 
+});
+function showDiv(){
+	$("#divAnchor").click();
+}	 
+</script>
+
+<title>无标题文档</title>
+</head>
+<body class="bg_body">
+
+<iframe allowtransparency="true" framespacing="0" frameborder="0" scrolling="no" width="100%" height="90" src="header01.html"></iframe>
+<div class="middle" style="width:902px;margin:0 auto;padding-top:10px;">
+  <iframe  allowtransparency="true" framespacing="0" frameborder="0" scrolling="no" width="132" height="510" src="sidebar.html" target="main"></iframe>
+  <iframe allowtransparency="true" framespacing="0" frameborder="0" scrolling="auto" width="760" height="510" src="info_mana.html" name="main" target="_self"></iframe>
+</div>
+<iframe allowtransparency="true" border="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" framespacing="0" frameborder="0" scrolling="no" width="100%" height="90" src="footer.html"></iframe>
+<a  href="#inlineContent" id="divAnchor"  style="display:none"></a>
+<div id="inlineContent" style=" display:none;"><!--这是一个弹出消息-->
+<div  class="pop_box">
+        <a href="#inlineContent" class="example5closeDOMWindow" style="display:none">close aaaaaaaa</a>
+        <h2>修改密码</h2>
+            	<table>
+  <tr>
+    <th>原始密码：</td>
+    <td><input name="" type="password" /></td>
+  </tr>
+  <tr>
+    <th>新密码：</td>
+    <td><input name="" type="password" /></td>
+  </tr>
+  <tr>
+    <th>再次输入新密码：</td>
+    <td><input name="" type="password" /></td>
+  </tr>
+  <tr class="bu_input03">
+    <td colspan="2"><input class="kill_box" type="submit" value="确 定"/></td>
+  </tr>
+</table>
+</div> 
+</div>
+</body>
+</html>

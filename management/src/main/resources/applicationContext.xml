@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:appmaster.properties</value>
+			</list>
+		</property>
+	</bean>
+     <!--数据库配置-->
+     <bean id="mongo" class="com.mongodb.Mongo" scope="singleton" lazy-init="false">
+			<constructor-arg index="0" type="java.lang.String" value="${mongodb.host}"/>
+			<constructor-arg index="1" type="int" value="${mongodb.port}"/>
+	</bean>  
+	<bean id="morphiaDataStore" class="com.babeeta.butterfly.application.management.dao.MorphiaDataStore" scope="singleton" lazy-init="false">
+		<property name="mongo" ref="mongo"/>
+		<property name="dbName" value="${mongodb.dbName}" />
+		<property name="mappingPackage" value="com.babeeta.butterfly.application.management.entity"/>		
+	</bean> 
+    <bean id="userDaoImpl" class="com.babeeta.butterfly.application.management.dao.impl.UserDaoImpl">
+      <constructor-arg  ref="morphiaDataStore"></constructor-arg> 
+    </bean>
+     <bean id="roleDaoImpl" class="com.babeeta.butterfly.application.management.dao.impl.RoleDaoImpl">
+      <constructor-arg  ref="morphiaDataStore"></constructor-arg> 
+    </bean>
+    <bean id="appDaoImpl" class="com.babeeta.butterfly.application.management.dao.impl.AppDaoImpl">
+      <constructor-arg  ref="morphiaDataStore"></constructor-arg> 
+    </bean>
+     <bean id="badWordsDaoImpl" class="com.babeeta.butterfly.application.management.dao.impl.BadWordDaoImpl">
+      <constructor-arg  ref="morphiaDataStore"></constructor-arg> 
+    </bean>
+    <bean id="messageDaoImpl" class="com.babeeta.butterfly.application.management.dao.impl.MessageDaoImpl">
+      <constructor-arg  ref="morphiaDataStore"></constructor-arg> 
+    </bean>
+    <bean id="licenceDaoImpl" class="com.babeeta.butterfly.application.management.dao.impl.LicenceDaoImpl">
+      <constructor-arg  ref="morphiaDataStore"></constructor-arg> 
+    </bean>
+    <bean id="statDao" class="com.babeeta.butterfly.application.management.dao.impl.StatDaoImpl">
+    	<constructor-arg ref="mongo"></constructor-arg>
+    </bean>
+    <bean id="frontServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.FrontServiceImpl">
+       <property name="userDaoImpl" ref="userDaoImpl"></property>
+       <property name="roleDaoImpl" ref="roleDaoImpl"></property>
+       <property name="appDaoImpl" ref="appDaoImpl"></property>
+       <property name="messageDaoImpl" ref="messageDaoImpl"></property>
+    </bean>
+    <bean id="messageServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.MessageServiceImpl">
+       <property name="messageDaoImpl" ref="messageDaoImpl"></property>
+       <property name="badWordsDaoImpl" ref="badWordsDaoImpl"></property>
+       <property name="pushHost" value="${pushHost}"></property>
+    </bean>
+    <bean id="managerServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.ManagerServiceImpl">
+       <property name="messageDaoImpl" ref="messageDaoImpl"></property>
+       <property name="badWordsDaoImpl" ref="badWordsDaoImpl"></property>
+       <property name="userDaoImpl" ref="userDaoImpl"></property>
+    </bean>
+     <bean id="appServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.AppServiceImpl">
+       <property name="appDaoImpl" ref="appDaoImpl"></property>
+       <property name="appRegisterHost" value="${appRegisterHost}"></property>
+    </bean>
+    <!-- licence管理 -->
+    <bean id="licenceServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.LicenceServiceImpl">
+        <property name="licenceDaoImpl" ref="licenceDaoImpl"></property>
+        <property name="appCountHost" value="${appCountHost}"></property>
+    </bean>
+    <bean id="userServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.UserServiceImpl">
+       <property name="userDaoImpl" ref="userDaoImpl"></property>
+    </bean>
+    <!-- mail -->
+	<bean id="sendMailServiceImpl" class="com.babeeta.butterfly.application.management.service.impl.SendMailServiceImpl" scope="singleton" >
+		<property name="mailSender">
+			<bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+				<property name="host" value="smtp.babeeta.com">	</property>
+				<property name="username" value="${mailUserName}"></property>
+				<property name="password" value="${mailPassword}"></property>
+			</bean>
+		</property>
+		<property name="velocityEngine">
+			<bean  class="org.springframework.ui.velocity.VelocityEngineFactoryBean" >
+				<property name="velocityProperties">
+						<props>
+						<prop key="resource.loader">class</prop>
+						<prop key="class.resource.loader.class">
+							org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+						</prop>
+						<prop key="input.encoding">utf-8</prop>
+						<prop key="output.encoding">utf-8</prop>
+					</props>		
+				</property>
+			</bean>		
+		</property>
+		<property name="from" value="${mailFrom}" >	</property>
+		<property name="host" value="${host}" >	</property>
+		<property name="resetPwdUrl" value="${resetPwdUrl}" >	</property>
+	</bean>
+    <!-- action实例 -->
+    <bean id="publicAction" class="com.babeeta.butterfly.application.management.action.PublicAction">
+       <property name="userServiceImpl" ref="userServiceImpl"></property>
+       <property name="managerEmail" value="${managerEmail}"></property>
+       <property name="managerPass" value="${managerPass}"></property>
+       <property name="address" value="${address}"></property>
+       <property name="company" value="${company}"></property>
+    </bean>
+    <bean id="sendMailAction" class="com.babeeta.butterfly.application.management.action.SendMailAction">
+       <property name="sendMailServiceImpl" ref="sendMailServiceImpl"></property>
+    </bean>
+    <bean id="frontAction" class="com.babeeta.butterfly.application.management.action.FrontAction">
+       <property name="appServiceImpl" ref="appServiceImpl"></property>
+       <property name="messageServiceImpl" ref="messageServiceImpl"></property>
+       <property name="frontServiceImpl" ref="frontServiceImpl"></property>
+       <property name="licenceServiceImpl" ref="licenceServiceImpl"></property>
+    </bean>
+    <bean id="managerAction" class="com.babeeta.butterfly.application.management.action.ManagerAction">
+       <property name="appServiceImpl" ref="appServiceImpl"></property>
+       <property name="messageServiceImpl" ref="messageServiceImpl"></property>
+       <property name="managerServiceImpl" ref="managerServiceImpl"></property>
+       <property name="userServiceImpl" ref="userServiceImpl"></property>
+        <property name="licenceServiceImpl" ref="licenceServiceImpl"></property>
+    </bean>
+    <bean id="licenceAction" class="com.babeeta.butterfly.application.management.action.LicenceAction">
+      <property name="licenceServiceImpl" ref="licenceServiceImpl"></property>
+    </bean>
+ </beans>

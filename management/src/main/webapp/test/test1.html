@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+　　<html xmlns="http://www.w3.org/1999/xhtml">
+
+　　<head>
+
+　　<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+　　<title>jquery pop up</title>
+
+<script type="text/javascript" src="/management/js/jquery_min.js"></script>
+
+　　<style type="text/css">
+
+　　* {
+
+　　margin:0;
+
+　　padding:0;
+
+　　}
+
+　　#wrapper {
+
+　　height:1000px;
+
+　　}
+
+　　#box {
+
+　　display:none;
+
+　　position:absolute;
+
+　　width:520px;
+
+　　height:300px;
+
+　　border:#f60 solid 2px;
+
+　　z-index:200;
+
+　　background:#fff111;
+
+　　}
+
+　　#closeBtn {
+
+　　position:absolute;
+
+　　right:10px;
+
+　　top:10px;
+
+　　cursor:pointer;
+
+　　}
+
+　　#greybackground {
+
+　　background:#000;
+
+　　display:block;
+
+　　z-index:100;
+
+　　width:100%;
+
+　　position:absolute;
+
+　　top:0;
+
+　　left:0;
+
+　　}
+
+　　</style>
+
+　　</head>
+
+　　<body>
+
+　　<div id="wrapper">
+
+　　<a href="#" id="popup">点击弹出div窗口</a>
+
+　　</div>
+
+　　<div id="box">
+
+
+　　<span id="closeBtn">关闭</span>
+
+　</div>
+
+　　<script type="text/javascript">
+
+　　$(function(){
+
+　　var screenwidth,screenheight,mytop,getPosLeft,getPosTop
+
+　　screenwidth = $(window).width();
+
+　　screenheight = $(window).height();
+
+　　mytop = $(document).scrollTop();
+
+　　getPosLeft = screenwidth/2 - 260;
+
+　　getPosTop = screenheight/2 - 150;
+
+　　$("#box").css({"left":getPosLeft,"top":getPosTop});
+
+　　$(window).resize(function(){
+
+　　screenwidth = $(window).width();
+
+　　screenheight = $(window).height();
+
+　　mytop = $(document).scrollTop();
+
+　　getPosLeft = screenwidth/2 - 260;
+
+　　getPosTop = screenheight/2 - 150;
+
+　　$("#box").css({"left":getPosLeft,"top":getPosTop+mytop});
+
+　　});
+
+　　$(window).scroll(function(){
+
+　　screenwidth = $(window).width();
+
+　　screenheight = $(window).height();
+
+　　mytop = $(document).scrollTop();
+
+　　getPosLeft = screenwidth/2 - 260;
+
+　　getPosTop = screenheight/2 - 150;
+
+　　$("#box").css({"left":getPosLeft,"top":getPosTop+mytop});
+
+　　});
+
+　　$("#popup").click(function(){
+
+　　$("#box").fadeIn("fast");
+
+　　$("body").append("<div id='greybackground'></div>");
+
+　　var documentheight = $(document).height();
+
+　　$("#greybackground").css({"opacity":"0.5","height":documentheight});
+
+　　return false;
+
+　　});
+
+　　$("#closeBtn").click(function() {
+
+　　$("#box").hide();
+
+　　$("#greybackground").remove();
+
+　　return false;
+
+　　});
+
+　　});
+
+　　</script>
+
+　　</body>
+
+　　</html>
+

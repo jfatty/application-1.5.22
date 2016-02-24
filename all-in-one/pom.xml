@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>application</artifactId>
+        <groupId>com.babeeta.butterfly</groupId>
+        <version>1.5.22.oppo</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.babeeta.butterfly.all</groupId>
+    <artifactId>all-in-one</artifactId>
+    <name>all-in-one</name>
+    <version>1.5.22.oppo</version>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.babeeta.butterfly</groupId>
+            <artifactId>message-routing-network</artifactId>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.babeeta.butterfly</groupId>
+            <artifactId>message-routing-core</artifactId>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.babeeta.butterfly</groupId>
+            <artifactId>message-routing-jvm</artifactId>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.babeeta.butterfly.application.router.dev</groupId>
+            <artifactId>router-dev</artifactId>
+            <version>${version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.babeeta.butterfly.application.router.gateway</groupId>
+            <artifactId>router-gateway</artifactId>
+            <version>${version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.babeeta.butterfly.application.router.gateway.secondary</groupId>
+            <artifactId>router-gateway-secondary</artifactId>
+            <version>1.5.22.oppo</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>0.9.26</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.26</version>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.2</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    
+    <build>
+    	<finalName>big-router</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assemble/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+             <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.3</version>
+				<configuration>
+					<tasks>
+						<sshexec host="${deploy.host}" username="${deploy.username}" password="${deploy.password}" trust="true" command="/bin/bash -lc 'cd ${deploy.home}; ./bin/service.sh stop; rm -rf *'" failonerror="false" />
+						<scp file="target/big-router-bin.tar.bz2" todir="${deploy.username}:${deploy.password}@${deploy.host}:${deploy.home}" trust="true" failonerror="true" />
+						<sshexec host="${deploy.host}" username="${deploy.username}" password="${deploy.password}" trust="true" command="/bin/bash -lc 'cd ${deploy.home};/bin/tar -xjf ./big-router-bin.tar.bz2; ./bin/service.sh start;'" failonerror="true" />
+					</tasks>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-jsch</artifactId>
+						<version>1.7.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+        </plugins>
+    </build>
+	<properties>
+		<deploy.host>192.168.20.82</deploy.host>
+		<deploy.username>root</deploy.username>
+		<deploy.password>shangmail</deploy.password>
+		<deploy.home>/app/bigrouter/</deploy.home>
+	</properties>
+</project>

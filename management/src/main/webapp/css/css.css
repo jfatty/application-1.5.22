@@ -1,0 +1,64 @@
+.syFocusThumb IMG {
+	BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: top; BORDER-LEFT-STYLE: none
+}
+.focusTit {
+	BACKGROUND: url(../images/indexP1bg.png) no-repeat
+}
+.focusNew .focusTab {
+	BACKGROUND: url(../images/indexP1bg.png) no-repeat
+}
+.syFocusThumb .prev {
+	BACKGROUND: url(../images/tab/go_back_bu.png) no-repeat
+}
+.syFocusThumb .next {
+	BACKGROUND: url(../images/tab/go_back_bu.png) no-repeat
+}
+.syFocusThumb .pagination I.selected IMG {
+	BACKGROUND: url(../images/tab/bu_bg.png) no-repeat 1px 2px;padding:0px;margin:0;
+}
+.syFocusThumb {
+	POSITION: relative; WIDTH: 218px;HEIGHT:300px; OVERFLOW: hidden;margin:114px auto 0;
+}
+.syFocusThumb .pagination {
+	POSITION: absolute; TEXT-ALIGN: left; WIDTH: 100%; HEIGHT: 34px;width:209px; COLOR: #fff; CLEAR: both; bottom:5px; LEFT: 6px; background:url(../images/tab/tab_navbg.jpg) no-repeat 0 0;
+}
+.syFocusThumb .pagination IMG {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; PADDING-TOP:2px
+}
+.syFocusThumb .thumbWrap {
+	POSITION: absolute; WIDTH: 200px; OVERFLOW: hidden; TOP: 4px; LEFT:9px
+}
+.syFocusThumb .thumbWrap IMG {
+	-MS-INTERPOLATION-MODE: bicubic
+}
+.syFocusThumb .holder {
+	WIDTH: 4000px
+}
+.syFocusThumb .holder I {
+	CURSOR: pointer; MARGIN-RIGHT: 3px
+}
+.syFocusThumb .prev {
+	POSITION: absolute; WIDTH: 11px; BACKGROUND-POSITION:0px 0px; HEIGHT: 34px; TOP:0px; CURSOR: pointer; LEFT:0px
+}
+.syFocusThumb .next {
+	POSITION: absolute; WIDTH:11px; BACKGROUND-POSITION: -616px -311px; HEIGHT: 40px; TOP:0px; CURSOR: pointer; LEFT: 0px
+}
+.syFocusThumb .next {
+	BACKGROUND-POSITION:0px -41px; RIGHT:0px; LEFT: auto
+}
+.syFocusThumb .pagination I.selected IMG {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px;PADDING-TOP:3px
+}
+.syFocusThumb .contentdiv {
+	HEIGHT: 260px
+}
+.syFocusThumb .toc a IMG {
+	WIDTH: 32px; HEIGHT: 26px
+}
+/*-----------add css-----------*/
+.dPic{width:218px;height:253px;margin:0 auto;text-align:center;}
+.dPic .cell_pic{width:100px;overflow:hidden;margin:50px auto 0;position:relative;}
+.dPic .cell_pic img{width:100px;height:100px;}
+.dPic .cell_pic b{color:#fff;height: 40px;margin: 0 auto; overflow: hidden;text-align: center; width: 110px; word-wrap: break-word;padding:0;}
+.dPic .cell_pic a{display:block;width:20px;height:20px;position:absolute;top:0;left:80px;}
+.dPic .cell_pic a img{width:20px;height:20px;margin:0;}

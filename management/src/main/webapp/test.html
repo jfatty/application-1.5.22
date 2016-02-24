@@ -1,0 +1,77 @@
+<html>
+ <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>点餐</title>
+   <script type="text/javascript">
+
+      var product =new Array("aa","bbb","ccc","dddd");
+      var price =["11","22","33","55"];
+      
+     function choose_local(obj)
+     {
+       if(obj=="wushan")
+       {
+		  document.getElementById("wushan_local").style.display="";
+		  document.getElementById("dongbei_local").style.display="none";
+       }
+       else
+       {
+    	   document.getElementById("wushan_local").style.display="none";
+ 		  document.getElementById("dongbei_local").style.display="";
+        }
+     }
+      function choose()
+      {	
+    	  var list = document.getElementsByName("order");
+    	  var str="";
+    	    for(var i=0;i<list.length;i++)
+    	    {
+    	        if(list[i].checked)
+    	        {
+    	            str+=list[i].value+",";
+    	            continue;
+    	        }
+    	    }
+    	   document.getElementById("order_info").value=str;	  
+      }
+
+     
+   </script>
+ </head>
+ <body >
+    <h2 align="center">点餐</h2>
+    <table border="1" align="center">
+        <tr>
+          <td>
+          
+              <input type="radio" name="local" checked="checked" id="wushan" onclick="choose_local('wushan')">巫山烤鱼 &nbsp;
+              <input type="radio" name="local" id="dongbei" onclick="choose_local('dongbei')">东北菜
+          </td>
+        </tr>
+        <tr id="wushan_local" style="display:">
+          <td>
+             <input name="order" type="checkbox" value="小炒肉">小炒肉&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉&nbsp;<br/>
+          </td>
+        </tr>
+         <tr id="dongbei_local" style="display: none">
+          <td>
+             <input name="order" type="checkbox" value="小炒肉">小炒肉1&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉1&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉1&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉1&nbsp;
+             <input name="order" type="checkbox"  value="小炒肉">小炒肉1&nbsp;<br/>
+          </td>
+        </tr>
+        <tr>
+          <td>所点菜：<textarea rows="10" cols="40" id="order_info"></textarea> </td>
+       </tr>
+        <tr>
+          <td align="center"><input type="button" name="btn" id="btn" value="随机点餐" onclick="choose()"> </td>
+       </tr>
+    </table>
+ </body>
+</html>

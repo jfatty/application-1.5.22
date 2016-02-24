@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.objectFactory.spring.autoWire" value="name"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.multipart.saveDir" value="/tmp"></constant>
+	<package name="manager-default" extends="struts-default" namespace="/">
+		<interceptors>
+		   <interceptor name="loginInterceptor" class="com.babeeta.butterfly.application.management.util.LoginInterceptor"></interceptor>
+		  
+		   <interceptor-stack name="myDefaultStack">
+                <interceptor-ref name="exception"/>
+              	<interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload">
+                  <param name="allowedTypes">
+                     application/octet-stream,image/png,image/gif,image/jpeg
+                  </param>
+                </interceptor-ref>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                  <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+
+		</interceptors>
+	    <global-results>
+	      <result name="login">login.jsp</result>
+	      <result name="error">error.jsp</result>
+	      <result name="loginOut">loginOut.jsp</result>
+	    </global-results> 
+		<action name="login" class="publicAction" method="login">
+		   <result name="user">front/index.jsp</result>
+		   <result name="error">error.jsp</result>
+		   <result name="manager">back/index.jsp</result>
+		</action>
+		<action name="registerAndLogin" class="publicAction" method="registerAndLogin">
+		   <result name="success">front/index.jsp</result>
+		   <result name="error">error.jsp</result>
+		</action>
+		<action name="loginOut" class="publicAction" method="loginOut">
+		   
+		</action>
+		<action name="register" class="publicAction" method="registerUser">
+		<!--  
+		   <result name="success">login.jsp</result>-->
+		   <result type="redirect">registerAndLogin.action?email=${email}</result>
+		   <result name="error">error.jsp</result>
+		   <!-- 使用拦截器 
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> -->
+		</action>
+		<action name="queryUserList" class="publicAction" method="queryUserList">
+		   <result name="success">/back/users.jsp</result>
+		   <result name="error">error.jsp</result>
+		    <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+		</action>
+		<action name="vilidateEmail" class="publicAction" method="vilidateEmail">
+		</action>
+		<action name="sendMail" class="sendMailAction" method="sendmail">
+			<result name="success">login.jsp</result>
+		   <result name="error">error.jsp</result>
+		</action>
+		<!--  
+		<action name="checkApp" class="webAction" method="checkApp">
+		   <result name="success">result.jsp</result>
+		   <result name="error">error.jsp</result>
+		</action>-->
+		<action name="addApp" class="frontAction" method="addApp">
+		   <result name="success" type="redirect">queryMyAppList.action</result>
+		   <result name="error">error.jsp</result>
+		    <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+		</action>
+	    <action name="initPush" class="frontAction" method="initPush">
+	       <result name="login">login.jsp</result>
+	       <result name="success">/front/pushMessage.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryMessageLife" class="frontAction" method="queryMessageLifeAndFormat">
+	     <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="broadcast" class="frontAction" method="broadcast">
+	      <result name="success" type="redirect">queryMyMessageList.action</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryMyAppList" class="frontAction" method="queryMyAppList">
+	        <result name="success">/front/apps.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryUser" class="publicAction" method="queryUser">
+	        <result name="success">/front/userInfo.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryMyMessageList" class="frontAction" method="queryMyMessageList">
+	       <result name="success">/front/messages.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryCheckMessageList" class="managerAction" method="queryCheckMessageList">
+	       <result name="success">/back/messages.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryCheckAppList" class="managerAction" method="queryCheckAppList">
+	      <result name="success">/back/apps.jsp</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryMyApp" class="frontAction" method="queryApp">
+	        <result name="success">/front/appInfo.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    
+	    <action name="queryMessageById" class="frontAction" method="queryMessageById">
+	        <result name="success">/front/messageInfo.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="checkApp" class="managerAction" method="checkApp">
+	        <result name="success" type="redirect">queryCheckAppList.action</result>
+	        <result name="noCount">noCount.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="checkMessage" class="managerAction" method="checkMessage">
+	        <result name="success" type="redirect">queryCheckMessageList.action</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryMessage" class="managerAction" method="queryMessage">
+	        <result name="success">/back/messageInfo.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="updateUser" class="publicAction" method="updateUser">
+	        <result name="success" type="redirect">queryUser.action?result=1</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="updatePass" class="publicAction" method="updatePass">
+	        <result name="success">loginOut.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="resetPass" class="publicAction" method="resetPass">
+	        <result name="success">loginOut.jsp</result>
+	    </action>
+	    <action name="updateApp" class="frontAction" method="updateApp">
+	        <result name="success" type="redirect">queryMyAppList.action</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryAppById" class="frontAction" method="appInfo">
+	       <result>/front/appInfo.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="toUpdateApp" class="frontAction" method="goToUpdateApp">
+	       <result>/front/appUpdate.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="managerInfo" class="managerAction" method="managerInfo">
+	      <result>/back/managerInfo.jsp</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="addWord" class="managerAction" method="addWord">
+	      <result type="redirect">queryWordsList.action?result=1</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="updateWord" class="managerAction" method="updateWord">
+	      <result type="redirect">queryWordsList.action?result=2</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="deleteWord" class="managerAction" method="deleteWord">
+	      <result type="redirect">queryWordsList.action</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	     <action name="queryWordsList" class="managerAction" method="queryWordsList">
+	      <result>/back/words.jsp</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="ajaxVilidateWords" class="managerAction" method="ajaxVilidateWords">
+	     <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	     <action name="ajaxCheckText" class="managerAction" method="ajaxCheckText">
+	      <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="ajaxCount" class="frontAction" method="ajaxCount">
+	      <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="queryCompanyList" class="managerAction" method="queryCompanyList">
+	       <result>/back/companys.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	     <action name="toUpdateMessage" class="frontAction" method="goToUpdateMessage">
+	       <result>/front/messageUpdate.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	     <action name="updateMessage" class="frontAction" method="updateMessage">
+	        <result name="success" type="redirect">toUpdateMessage.action?messageId=${#request.messageId}</result>
+	 		 <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <action name="viewMessageInfo" class="frontAction" method="viewMessageInfo">
+	       <result>/front/messageInfo.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <!-- 后台审核消息 -->
+	    <action name="queryMessage" class="managerAction" method="queryMessage">
+	       <result>/back/messageInfo.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <!-- 后台应用审核 -->
+	     <action name="queryApp" class="managerAction" method="queryApp">
+	        <result name="success">/back/appInfo.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	     <!-- 后台应用管理 -->
+	     <action name="appManager" class="managerAction" method="appManager">
+	        <result name="success">/back/appManager.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <!-- 后台消息管理 -->
+	     <action name="messageManager" class="managerAction" method="messageManager">
+	        <result name="success">/back/messageManager.jsp</result>
+	         <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <!-- 设置管理员 -->
+	     <action name="setManager" class="managerAction" method="setManager">
+	      <result type="redirect">queryUserList.action</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	     <!-- licence初始化 -->
+	     <action name="initLicence" class="licenceAction" method="initLicence">
+	      <result>/back/licence.jsp</result>
+	       <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <!-- Licence管理 -->
+	     <action name="importLicenceFile" class="licenceAction" method="importLicenceFile">
+	      <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">
+                   application/octet-stream,application/x-wais-source,text/plain
+                </param>
+                <param name="maximumSize">512000</param>
+	      </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+	      <result type="redirect">initLicence.action?result=${result}</result>
+	    </action>
+	    <action name="checkPageApp" class="managerAction" method="checkPageApp">
+	       <result type="redirect">queryCheckAppList.action</result>
+	       <result name="noCount">noCount.jsp</result>
+	        <!-- 使用拦截器 -->
+		   <interceptor-ref name="defaultStack"/>
+           <interceptor-ref name="loginInterceptor"/> 
+	    </action>
+	    <!-- 生成随机码 -->
+	     <action name="createImage" class="publicAction" method="createImage">
+	    </action>
+	</package>
+
+</struts>

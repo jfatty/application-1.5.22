@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/plain; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.4.1.min.js"></script>
+<script type="text/javascript">
+  function submit_form()
+  {
+	    var forms=document.getElementById("forms");
+	    forms.action="/services/words/addword";
+	    forms.submit();
+  }
+</script>
+<title>新增敏感词</title>
+</head>
+<body>
+<form action="addWords.action" id="forms" name="forms" method="post" >
+<h2 align="center">添加敏感词</h2>
+<table align="center" width="60%" border="1">
+	<tr>
+		<td>敏感词</td>
+		<td><textarea rows="10" cols="60" name="words" id="words" ></textarea><font
+			color="red">多个敏感词之间用 | 线隔开</font></td>
+	</tr>
+	<tr>
+		<td align="center" colspan="2"><input type="submit" value="提交"
+			id="add" name="add"></input>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="重置" id="sub" onclick=""></td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

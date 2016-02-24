@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC   
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"   
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  
+  	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<jsp-config>
+	<taglib>
+		<taglib-uri>/s</taglib-uri>
+		<taglib-location>/WEB-INF/struts-tags.tld</taglib-location>
+	</taglib>
+	</jsp-config>
+
+	<filter>
+	  <filter-name>loginFilter</filter-name>
+	  <filter-class>com.babeeta.butterfly.application.management.util.LoginFilter</filter-class>
+	</filter>
+	<filter>
+	  <filter-name>charsetFilter</filter-name>
+	  <filter-class>com.babeeta.butterfly.application.management.util.CharsetFilter</filter-class>
+	</filter>
+	
+	<!--  
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	-->
+	
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+	</filter>	
+
+	<servlet>
+        <servlet-name>statServlet</servlet-name>
+        <servlet-class>
+            com.babeeta.butterfly.application.management.servlet.StatServlet
+        </servlet-class>
+    </servlet>
+
+	<servlet-mapping>
+        <servlet-name>statServlet</servlet-name>
+        <url-pattern>/1/api/stat</url-pattern>
+    </servlet-mapping>
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+		<filter-mapping>
+	     <filter-name>loginFilter</filter-name>
+	     <url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+	     <filter-name>loginFilter</filter-name>
+	     <url-pattern>/back/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+	     <filter-name>loginFilter</filter-name>
+	     <url-pattern>/front/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<filter-mapping>
+	     <filter-name>charsetFilter</filter-name>
+	     <url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+	     <filter-name>charsetFilter</filter-name>
+	     <url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>login.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

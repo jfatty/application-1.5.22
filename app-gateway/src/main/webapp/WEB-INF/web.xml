@@ -1,0 +1,67 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>application gateway</display-name>
+
+	<servlet>
+		<servlet-name>appGatewayServer</servlet-name>
+		<servlet-class>com.babeeta.butterfly.app.ThirdAppGatewayServer</servlet-class>
+
+		<init-param>
+			<param-name>msgContentMaxLength</param-name>
+			<param-value>8192</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>restfulUrl</param-name>
+			<param-value>/service/client/</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>oldPushMessageAppServlet</servlet-name>
+		<servlet-class>com.babeeta.butterfly.app.servlet.OldPushMessageAppServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>oldPushMessageAppServlet</servlet-name>
+		<url-pattern>/service/push/server/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>pushMessageAppServlet</servlet-name>
+		<servlet-class>com.babeeta.butterfly.app.servlet.PushMessageAppServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>pushMessageAppServlet</servlet-name>
+		<url-pattern>/service/client/*</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>messageStatusAppServlet</servlet-name>
+		<servlet-class>com.babeeta.butterfly.app.servlet.MessageStatusAppServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>messageStatusAppServlet</servlet-name>
+		<url-pattern>/service/client/all/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>monitorServlet</servlet-name>
+		<servlet-class>com.babeeta.butterfly.app.monitor.AppGatewayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>monitorServlet</servlet-name>
+		<url-pattern>/monitor/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
